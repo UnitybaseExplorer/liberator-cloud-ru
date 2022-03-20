@@ -27,12 +27,25 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 ` git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
 
 - Run Google Cloud Tools for PowerShell (Windows) & cd to cloned repo
-    - during init select
-    - gcloud init - Create a new project
+    - during autostarted init (or on `gcloud init` command) select:
+        - user
+        - select created project
+
+- run `gcloud services list --enabled`
+
+Theese API must be enanbled:
+- artifactregistry.googleapis.com
+- run.googleapis.com
+If not run:
+- `gcloud services enable artifactregistry.googleapis.com`
+- `gcloud services enable run.googleapis.com`
+
+<!-- - run `$project_id="<PROJECT_ID>"` (replace <PROJECT_ID> with ID of the project created earlier) -->
+
+
 - run `cd full/path-to-cloned-repo/liberator-cloud-run`
 
-- Create project & artifacts repo, build & push container to it:
-    - `$project_id="<PROJECT_ID>"` (replace <PROJECT_ID> with ID of the project created earlier)
+- Create artifacts repo, build & push container to it:    
     - `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --project=$project_id --description="Docker $project_id repository"`
     - `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`
 

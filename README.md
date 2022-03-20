@@ -3,10 +3,10 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 
 ## General preparation
 - Create  Google Cloud Account https://console.cloud.google.com/freetrial/signup/tos
-- Create new project:
+<!-- - Create new project:
     - In navigation menu go to **IAM & Admin -> Manage resources**
-    - Click **Create Project**, name the project as **disliberator** & click Crate
-    - Copy the ID of the project & save it. It will be used later as value <PROJECT_ID>
+    - Click **Create Project**, name the project as **disliberator** & click **Create**
+    - Copy the ID of the project & save it. It will be used later as value <PROJECT_ID> -->
 
 <!-- - Enable Artifact Registry API for the project https://console.cloud.google.com/apis/library/artifactregistry.googleapis.com?project=<PROJECT_ID>
 
@@ -21,15 +21,12 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 
 - Ensure Docker Desktop is running
 
-
-## Prepare container
-- Clone this repo
-` git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
-
+## Configure Google Cloud CLI & prepare docker image
 - Run Google Cloud Tools for PowerShell (Windows) & cd to cloned repo
     - during autostarted init (or on `gcloud init` command) select:
         - user
-        - select created project
+        - select New project
+        - name the project `disliberator`
 
 - run `gcloud services list --enabled`
 
@@ -42,9 +39,12 @@ If not run:
 
 <!-- - run `$project_id="<PROJECT_ID>"` (replace <PROJECT_ID> with ID of the project created earlier) -->
 
-
+- Clone this repo
+` git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
 - run `cd full/path-to-cloned-repo/liberator-cloud-run`
+- run `$project_id="<PROJECT_ID>" (replace <PROJECT_ID> with ID of the project created earlier)`
 
+## Deploy docker image
 - Create artifacts repo, build & push container to it:    
     - `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --project=$project_id --description="Docker $project_id repository"`
     - `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`

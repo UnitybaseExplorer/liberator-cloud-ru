@@ -13,13 +13,15 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 - Run Google Cloud Tools for PowerShell (Windows) & cd to cloned repo
 `cd full/path-to-cloned-repo/liberator-cloud-run`
 
-- Create project & artifacts repo, build & push container to it
--- `$project_id=disliberator`
--- `gcloud projects create disliberator --name $project_id`
--- `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --description="Docker $project_id repository"`
--- `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`
+- Create project & artifacts repo, build & push container to it:
+    - `$project_id=disliberator`
+    - `gcloud projects create disliberator --name $project_id`
+    - `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --description="Docker $project_id repository"`
+    - `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`
+
 - Test container
 `docker run --rm -p 8080:8080 us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator`
+
 
 ## Deploy / redeploy container instances
 - Deploy container instances

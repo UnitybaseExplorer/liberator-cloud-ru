@@ -3,6 +3,11 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 
 ## General preparation
 - Create  Google Cloud Account https://console.cloud.google.com/freetrial/signup/tos
+- Create new project:
+    - In navigation menu go to **IAM & Admin -> Manage resources**
+    - Click **Create Project**, name the project as **disliberator** & click Crate
+    - Copy the ID of the project & save it. It will be used later as vlaue <PRIJECT_ID>
+
 - Install Google Cloud CLI https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 
 
@@ -14,8 +19,7 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 `cd full/path-to-cloned-repo/liberator-cloud-run`
 
 - Create project & artifacts repo, build & push container to it:
-    - `$project_id=disliberator`
-    - `gcloud projects create disliberator --name $project_id`
+    - `$project_id="<PRIJECT_ID>"` (replace <PRIJECT_ID> with ID of the project created earlier)
     - `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --description="Docker $project_id repository"`
     - `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`
 

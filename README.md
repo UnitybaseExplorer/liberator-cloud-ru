@@ -75,3 +75,20 @@ If not run:
 
 ## Read logs
 `for ($num = 0; $num -le 9; $num++) {Write-Host "liberator-service-$num status:"; gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service-$num" --project $project_id --limit 10 --flatten textPayload --format=list}`
+
+At normal state container should produce such logs
+```
+ - 2022-03-20T14:08:41Z Massive https://childsmile-ua.org/ attacking...
+ - 2022-03-20T14:08:41Z Massive https://childsmile-ua.org/ attacking...
+ - 2022-03-20T14:08:35Z Massive https://childsmile-ua.org/ attacking...
+ - 2022-03-20T14:08:32Z Massive https://childsmile-ua.org/ attacking...
+ - 2022-03-20T14:08:29Z Massive https://childsmile-ua.org/ attacking...
+ - 2022-03-20T14:08:26Z Massive https://childsmile-ua.org/ attacking...
+ ```
+
+ **On Errors**
+ Run the same command as in **Deploy / redeploy container instances** section:
+ - `for ($num = 0; $num -le 9; $num++) {gcloud run deploy liberator-service-$num --image us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator --region europe-west1 --project=$project_id --platform managed --allow-unauthenticated --quiet --min-instances 1 --max-instances=3 --cpu=1 --memory=1Gi}`
+
+ ## Delete services
+ - `for ($num = 0; $num -le 9; $num++) {gcloud run services delete liberator-service-$num --region europe-west1 --quiet}`

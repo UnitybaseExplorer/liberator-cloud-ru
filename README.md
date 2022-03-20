@@ -1,5 +1,5 @@
-# Create Container Instances with disBalacer on GCP Cloud Run
-Deploy disBalacer Liberator on GCP Cloud Run
+# Deploy disBalacer on GCP Cloud Run
+Create Container Instances with disBalacer Liberator on GCP Cloud Run
 
 ## General preparation
 - Create  Google Cloud Account https://console.cloud.google.com/freetrial/signup/tos

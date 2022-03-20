@@ -10,6 +10,9 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 
 - Enable Artifact Registry API for the project https://console.cloud.google.com/apis/library/artifactregistry.googleapis.com?project=<PROJECT_ID>
 
+- Enable Cloud Run Admin API for the project https://console.cloud.google.com/run?project=<PROJECT_ID>
+    - Click **Create Service**, wait while Cloud Run Admin API is beeilng enabled & then click **Cancel**
+
 - Install Docker Desktop on Windows https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe (guide - https://docs.docker.com/desktop/windows/install/)
     - Enable the WSL 2 feature on Windows. For detailed instructions, refer to the Microsoft documentation.
     - Enable in the BIOS settings BIOS-level hardware virtualization support.
@@ -24,11 +27,13 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 ` git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
 
 - Run Google Cloud Tools for PowerShell (Windows) & cd to cloned repo
-`cd full/path-to-cloned-repo/liberator-cloud-run`
+    - during init select
+    - gcloud init - Create a new project
+- run `cd full/path-to-cloned-repo/liberator-cloud-run`
 
 - Create project & artifacts repo, build & push container to it:
     - `$project_id="<PROJECT_ID>"` (replace <PROJECT_ID> with ID of the project created earlier)
-    - `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --description="Docker $project_id repository"`
+    - `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --project=$project_id --description="Docker $project_id repository"`
     - `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`
 
 - Test container

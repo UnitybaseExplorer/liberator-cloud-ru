@@ -1,27 +1,29 @@
-# launcher-disbalancer
+# Create Container Instances with disBalacer on GCP Cloud Run
+Deploy disBalacer Liberator on GCP Cloud Run
 
-# GCP cloud run
-
-## create repo & push image
-gcloud init
-gcloud projects create disliberator --name="disliberator"
-gcloud artifacts repositories create disliberator-repo --repository-format=docker --location=us-central1 --description="Docker repository"
-docker build -t us-central1-docker.pkg.dev/disliberator/disliberator-repo/liberator:latest .
-<!-- docker run --rm -p 8080:8080 us-central1-docker.pkg.dev/disliberator/disliberator-repo/liberator -->
-
-gcloud auth configure-docker us-central1-docker.pkg.dev
-docker push us-central1-docker.pkg.dev/disliberator/disliberator-repo/liberator:latest
-
-## deploy container to Cloud Run
-<!-- gcloud run deploy liberator-service --image us-central1-docker.pkg.dev/serverlessrun/liberator-repo/liberator --region us-central1 --project=serverlessrun --platform managed --allow-unauthenticated --quiet --min-instances 1 --max-instances=3 -->
-
-POWERSHELL // --region $regions[$num]
-$regions=@("australia-southeast1", "europe-north1", "europe-west1", "northamerica-northeast1", "southamerica-east1", "us-central1", "us-west1", "asia-south1", "asia-southeast1", "europe-west4")
-for ($num = 0; $num -le 9; $num++) {gcloud run deploy liberator-service-$num --image us-central1-docker.pkg.dev/serverlessrun/liberator-repo/liberator --region europe-west1 --project=serverlessrun --platform managed --allow-unauthenticated --quiet --min-instances 1 --max-instances=3 --cpu=1 --memory=1Gi}
+## General preparation
+- Create  Google Cloud Account https://console.cloud.google.com/freetrial/signup/tos
+- Install Google Cloud CLI https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 
 
-===========
+## Prepare container
+- Clone this repo
+` git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
 
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service" --project serverlessrun --limit 10 --flatten textPayload --format=list
+- Run Google Cloud Tools for PowerShell (Windows) & cd to cloned repo
+`cd full/path-to-cloned-repo/liberator-cloud-run`
 
-for ($num = 0; $num -le 9; $num++) {Write-Host "liberator-service-$num status:"; gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service-$num" --project serverlessrun --limit 10 --flatten textPayload --format=list}
+- Create project & artifacts repo, build & push container to it
+-- `$project_id=disliberator`
+-- `gcloud projects create disliberator --name $project_id`
+-- `gcloud artifacts repositories create $project_id-repo --repository-format=docker --location=us-central1 --description="Docker $project_id repository"`
+-- `docker build -t us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator:latest .`
+- Test container
+`docker run --rm -p 8080:8080 us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator`
+
+## Deploy / redeploy container instances
+- Deploy container instances
+`for ($num = 0; $num -le 9; $num++) {gcloud run deploy liberator-service-$num --image us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator --region europe-west1 --project=$project_id --platform managed --allow-unauthenticated --quiet --min-instances 1 --max-instances=3 --cpu=1 --memory=1Gi}`
+
+## Read logs
+`for ($num = 0; $num -le 9; $num++) {Write-Host "liberator-service-$num status:"; gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service-$num" --project $project_id --limit 10 --flatten textPayload --format=list}`

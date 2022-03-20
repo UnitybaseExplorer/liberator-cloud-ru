@@ -8,10 +8,10 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
     - Click **Create Project**, name the project as **disliberator** & click Crate
     - Copy the ID of the project & save it. It will be used later as value <PROJECT_ID>
 
-- Enable Artifact Registry API for the project https://console.cloud.google.com/apis/library/artifactregistry.googleapis.com?project=<PROJECT_ID>
+<!-- - Enable Artifact Registry API for the project https://console.cloud.google.com/apis/library/artifactregistry.googleapis.com?project=<PROJECT_ID>
 
 - Enable Cloud Run Admin API for the project https://console.cloud.google.com/run?project=<PROJECT_ID>
-    - Click **Create Service**, wait while Cloud Run Admin API is beeilng enabled & then click **Cancel**
+    - Click **Create Service**, wait while Cloud Run Admin API is beeilng enabled & then click **Cancel** -->
 
 - Install Docker Desktop on Windows https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe (guide - https://docs.docker.com/desktop/windows/install/)
     - Enable the WSL 2 feature on Windows. For detailed instructions, refer to the Microsoft documentation.

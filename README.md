@@ -22,12 +22,14 @@ Create Container Instances with disBalacer Liberator on GCP Cloud Run
 - Ensure Docker Desktop is running
 
 ## Configure Google Cloud CLI & prepare docker image
-- Run Google Cloud Tools for PowerShell (Windows)
-    - during autostarted init (or on `gcloud init` command) select:
-        - user
-        - select New project
-        - name the project `disliberator`
+- during autostarted init (or on `gcloud init` command) select:
+    - user
+    - select New project
+    - name the project `disliberator`
 
+-  `gcloud beta billing accounts list`
+- run `gcloud config set project disliberator`
+- `gcloud beta billing projects link disliberatorkate --billing-account=01CD57-2BD3C8-04CCAD`
 - run `gcloud services list --enabled`. Theese API must be enanbled:
     - *artifactregistry.googleapis.com*
     - *run.googleapis.com*
@@ -39,8 +41,9 @@ If not, run:
 <!-- - run `$project_id="<PROJECT_ID>"` (replace <PROJECT_ID> with ID of the project created earlier) -->
 
 - Clone this repo  & cd to cloned repo:
-    - ` git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
-    - `cd full/path-to-cloned-repo/liberator-cloud-run`
+    - Open Google Cloud Tools for PowerShell (Windows) 
+    - run `git clone https://github.com/UnitybaseExplorer/liberator-cloud-run.git`
+    - run `cd full/path-to-cloned-repo/liberator-cloud-run`
 
 ## Deploy docker image
 - Create artifacts repo, build & test container, push docker image to artifacts repo:
@@ -70,13 +73,14 @@ If not, run:
 `for ($num = 0; $num -le 9; $num++) {gcloud run deploy liberator-service-$num --image us-central1-docker.pkg.dev/$project_id/$project_id-repo/liberator --region europe-west1 --project=$project_id --platform managed --allow-unauthenticated --quiet --min-instances 1 --max-instances=3 --cpu=1 --memory=1Gi}`
 
 ### Read logs
-`for ($num = 0; $num -le 9; $num++) {Write-Host "liberator-service-$num status:"; gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service-$num" --project $project_id --limit 10 --flatten textPayload --format=list}`
+-`for ($num = 0; $num -le 9; $num++) {Write-Host "liberator-service-$num status:"; gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service-$num" --project $project_id --limit 10 --flatten textPayload --format=list}`
+-`for ($num = 0; $num -le 19; $num++) {Write-Host "liberator-service-$num status:"; add-content -path gcp-liberator.txt -value "liberator-service-$num status:"; add-content -path gcp-liberator.txt -value (gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=liberator-service-$num" --project $project_id --limit 5 --flatten textPayload --format=list)}`
 
 At normal state container should produce logs:
 ```
- - 2022-03-20T14:08:41Z Massive {URL} attacking...
- - 2022-03-20T14:08:41Z Massive {URL} attacking...
- - 2022-03-20T14:08:41Z Massive {URL} attacking...
+ - {timestamp} Massive {URL} attacking...
+ - {timestamp} Massive {URL} attacking...
+ - {timestamp} Massive {URL} attacking...
  ```
 
 ### On Errors
